@@ -8,6 +8,9 @@ import { BranchDashboard } from '@/features/branches/BranchDashboard';
 import { BranchesPage } from '@/features/branches/BranchesPage';
 import { UserListPage } from '@/features/users/UserListPage';
 import { AuditLogPage } from '@/features/audit/AuditLogPage';
+import { VehicleListPage } from '@/features/vehicles/VehicleListPage';
+import { VehicleCreatePage } from '@/features/vehicles/VehicleCreatePage';
+import { VehicleDetailPage } from '@/features/vehicles/VehicleDetailPage';
 
 export const router = createBrowserRouter([
   { path: '/login', element: <LoginPage /> },
@@ -21,6 +24,12 @@ export const router = createBrowserRouter([
           { path: '/dashboard', element: <AdminDashboard /> },
           { path: '/branch/dashboard', element: <BranchDashboard /> },
           { path: '/branches', element: <BranchesPage /> },
+          { path: '/vehicles', element: <VehicleListPage /> },
+          {
+            element: <RequirePermission permission="vehicles.manage" />,
+            children: [{ path: '/vehicles/new', element: <VehicleCreatePage /> }],
+          },
+          { path: '/vehicles/:id', element: <VehicleDetailPage /> },
           {
             element: <RequirePermission permission="users.manage" />,
             children: [{ path: '/users', element: <UserListPage /> }],

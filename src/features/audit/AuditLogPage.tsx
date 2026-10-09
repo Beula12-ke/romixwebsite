@@ -1,8 +1,22 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 
+interface AuditLog {
+  id: number;
+  user_id: string | null;
+  branch_id: string | null;
+  action: string;
+  entity_type: string;
+  entity_id: string | null;
+  old_values: Record<string, unknown> | null;
+  new_values: Record<string, unknown> | null;
+  ip_address: string | null;
+  user_agent: string | null;
+  created_at: string;
+}
+
 export function AuditLogPage() {
-  const { data: logs = [], isLoading } = useQuery({
+  const { data: logs = [], isLoading } = useQuery<AuditLog[]>({
     queryKey: ['audit'],
     queryFn: async () => {
       const { data, error } = await supabase
@@ -31,7 +45,7 @@ export function AuditLogPage() {
             </tr>
           </thead>
           <tbody>
-            {logs.map((l: any) => (
+            {logs.map((l: AuditLog) => (
               <tr key={l.id} className="border-t">
                 <td className="p-3">{new Date(l.created_at).toLocaleString()}</td>
                 <td className="font-mono text-xs">{l.action}</td>

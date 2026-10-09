@@ -1,10 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
-import { usePermissions } from '@/features/auth/usePermissions';
-import { Navigate } from 'react-router-dom';
+import { useProfile } from '@/features/auth/useProfile';
+
+const COMPANY_WIDE_ROLES = [
+  'super_admin',
+  'owner',
+  'operations_manager',
+  'tracking_controller',
+  'finance',
+  'platform_admin',
+];
 
 export function AdminDashboard() {
-  const { has, loading } = usePermissions();
+  const { data: profile, isLoading: profileLoading } = useProfile();
 
   const { data: branches = [] } = useQuery({
     queryKey: ['branches'],
@@ -15,8 +23,25 @@ export function AdminDashboard() {
     },
   });
 
-  if (loading) return <div>Loading…</div>;
-  if (!has('branches.manage')) return <Navigate to="/branch/dashboard" replace />;
+  if (profileLoading) return <div className="p-6 text-slate-500">Loading…</div>;
+
+  const isCompanyWide =
+    !!profile?.role_name && COMPANY_WIDE_ROLES.includes(profile.role_name);
+
+  if (!isCompanyWide) {
+    return (
+      <div className="space-y-6">
+        <h1 className="text-2xl font-bold text-navy">Branch Dashboard</h1>
+        <p className="text-slate-500">
+          Signed in as <strong>{profile?.full_name ?? profile?.email ?? 'User'}</strong> · Branch:{' '}
+          <strong>{profile?.branch_name ?? '—'}</strong>
+        </p>
+        <div className="bg-white rounded-lg shadow p-6 text-sm text-slate-500">
+          Bookings, dispatch/return, and fleet widgets arrive in Phase 4+.
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

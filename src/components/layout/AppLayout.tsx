@@ -1,10 +1,11 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Building2, Users, ScrollText, LogOut } from 'lucide-react';
+import { LayoutDashboard, Building2, Users, ScrollText, LogOut, Car } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useProfile } from '@/features/auth/useProfile';
 
 const nav = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/vehicles', label: 'Vehicles', icon: Car },
   { to: '/branches', label: 'Branches', icon: Building2 },
   { to: '/users', label: 'Users', icon: Users },
   { to: '/audit', label: 'Audit Log', icon: ScrollText },

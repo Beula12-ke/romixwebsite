@@ -9,20 +9,32 @@ export function usePermissions() {
     queryKey: ['permissions', profile?.role_id],
     enabled: !!profile?.role_id,
     queryFn: async () => {
-      const { data, error } = await supabase
+      const roleId = profile!.role_id!;
+
+      const { data: links, error: linksError } = await supabase
         .from('role_permissions')
-        .select('permissions(name)')
-        .eq('role_id', profile!.role_id!);
-      if (error) throw error;
-      return (data ?? []).map((r: any) => r.permissions.name as string);
+        .select('permission_id')
+        .eq('role_id', roleId);
+      if (linksError) throw linksError;
+
+      const ids = (links ?? []).map((r: any) => r.permission_id);
+      if (ids.length === 0) return [];
+
+      const { data: perms, error: permsError } = await supabase
+        .from('permissions')
+        .select('name')
+        .in('id', ids);
+      if (permsError) throw permsError;
+
+      return (perms ?? []).map((p: any) => p.name as string);
     },
   });
 
-  const perms = new Set(query.data ?? []);
+  const permSet = new Set(query.data ?? []);
 
   return {
     loading: profileLoading || query.isLoading,
-    has: (p: string) => perms.has(p),
-    list: Array.from(perms),
+    has: (p: string) => permSet.has(p),
+    list: Array.from(permSet),
   };
 }

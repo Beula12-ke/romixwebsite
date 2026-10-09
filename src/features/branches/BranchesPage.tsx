@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
+import type { Branch } from '@/types/database';
 
 export function BranchesPage() {
-  const { data: branches = [], isLoading } = useQuery({
+  const { data: branches = [], isLoading } = useQuery<Branch[]>({
     queryKey: ['branches'],
     queryFn: async () => {
       const { data, error } = await supabase.from('branches').select('*').order('name');
@@ -17,7 +18,7 @@ export function BranchesPage() {
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-navy">Branches</h1>
       <div className="bg-white rounded-lg shadow divide-y">
-        {branches.map((b: any) => (
+        {branches.map((b: Branch) => (
           <div key={b.id} className="p-4">
             <div className="font-semibold text-navy">{b.name} <span className="font-mono text-xs text-slate-400">({b.code})</span></div>
             <div className="text-sm text-slate-500">{b.address}</div>

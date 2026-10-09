@@ -2,7 +2,8 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { useVehicle, useUpdateVehicle, type VehicleStatus } from './useVehicles';
 import { usePermissions } from '@/features/auth/usePermissions';
-import type { Vehicle } from '@/types/database';
+import { VehicleMediaSection } from './VehicleMediaSection';
+import { VehicleDocumentsSection } from './VehicleDocumentsSection';
 
 const STATUSES: VehicleStatus[] = [
   'available','reserved','booked','preparing','on_route','active_hire',
@@ -18,7 +19,7 @@ export function VehicleDetailPage() {
   if (isLoading) return <div className="p-6 text-slate-500">Loading…</div>;
   if (error || !vehicle) return <div className="p-6 text-danger">Vehicle not found.</div>;
 
-  const v = vehicle as Vehicle;
+  const v = vehicle as any;
 
   const changeStatus = async (status: VehicleStatus) => {
     await update.mutateAsync({ id: v.id, patch: { status } });
@@ -76,6 +77,9 @@ export function VehicleDetailPage() {
           <p className="text-sm text-slate-600 whitespace-pre-wrap">{v.notes}</p>
         </div>
       )}
+
+      <VehicleMediaSection vehicleId={v.id} branchId={v.branch_id} />
+      <VehicleDocumentsSection vehicleId={v.id} branchId={v.branch_id} />
     </div>
   );
 }

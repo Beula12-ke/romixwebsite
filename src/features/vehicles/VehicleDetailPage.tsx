@@ -1,7 +1,9 @@
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
-import { useVehicle, useUpdateVehicle, type VehicleStatus } from './useVehicles';
+import { useNavigate } from 'react-router-dom';
+import { ArrowLeft, Trash2 } from 'lucide-react';
+import { useVehicle, useUpdateVehicle, useDeleteVehicle, type VehicleStatus } from './useVehicles';
 import { usePermissions } from '@/features/auth/usePermissions';
+import { useProfile } from '@/features/auth/useProfile';
 import { VehicleMediaSection } from './VehicleMediaSection';
 import { VehicleDocumentsSection } from './VehicleDocumentsSection';
 
@@ -15,6 +17,24 @@ export function VehicleDetailPage() {
   const { data: vehicle, isLoading, error } = useVehicle(id);
   const update = useUpdateVehicle();
   const { has } = usePermissions();
+
+  const navigate = useNavigate();
+  const delVehicle = useDeleteVehicle();
+  const { data: profile } = useProfile();
+  const canDelete = ['super_admin', 'owner', 'platform_admin'].includes(profile?.role_name ?? '');
+
+  const handleDelete = async () => {
+    if (!vehicle) return;
+    const v = vehicle as any;
+    if (!confirm(`Delete ${v.registration}? This cannot be undone.`)) return;
+    if (!confirm('Are you absolutely sure? All photos and documents will also be deleted.')) return;
+    try {
+      await delVehicle.mutateAsync(v.id);
+      navigate('/vehicles');
+    } catch (e: any) {
+      alert(e?.message ?? 'Delete failed');
+    }
+  };
 
   if (isLoading) return <div className="p-6 text-slate-500">Loading…</div>;
   if (error || !vehicle) return <div className="p-6 text-danger">Vehicle not found.</div>;
@@ -80,6 +100,24 @@ export function VehicleDetailPage() {
 
       <VehicleMediaSection vehicleId={v.id} branchId={v.branch_id} />
       <VehicleDocumentsSection vehicleId={v.id} branchId={v.branch_id} />
+
+      {canDelete && (
+        <div className="bg-danger/5 border border-danger/30 rounded-lg p-6">
+          <h2 className="font-semibold text-danger">Danger Zone</h2>
+          <p className="text-sm text-slate-600 mt-1">
+            Permanently delete this vehicle, its photos, documents, and booking history.
+          </p>
+          <button
+            type="button"
+            onClick={handleDelete}
+            disabled={delVehicle.isPending}
+            className="mt-4 inline-flex items-center gap-2 bg-danger hover:bg-danger/90 text-white rounded-md px-4 py-2 text-sm font-medium disabled:opacity-60"
+          >
+            <Trash2 size={14} />
+            {delVehicle.isPending ? 'Deleting…' : 'Delete Vehicle'}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

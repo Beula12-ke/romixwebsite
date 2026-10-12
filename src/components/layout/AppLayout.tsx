@@ -1,11 +1,22 @@
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Building2, Users, ScrollText, LogOut, Car } from 'lucide-react';
+import {
+  LayoutDashboard,
+  Car,
+  CalendarCheck,
+  Users,
+  Contact,
+  Building2,
+  ScrollText,
+  LogOut,
+} from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useProfile } from '@/features/auth/useProfile';
 
 const nav = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { to: '/bookings', label: 'Bookings', icon: CalendarCheck },
   { to: '/vehicles', label: 'Vehicles', icon: Car },
+  { to: '/customers', label: 'Customers', icon: Contact },
   { to: '/branches', label: 'Branches', icon: Building2 },
   { to: '/users', label: 'Users', icon: Users },
   { to: '/audit', label: 'Audit Log', icon: ScrollText },
@@ -44,6 +55,7 @@ export function AppLayout() {
         </nav>
         <div className="p-3 border-t border-white/10">
           <div className="text-sm">{profile?.full_name || profile?.email || 'User'}</div>
+          <div className="text-xs text-white/60 mt-0.5">{profile?.branch_name ?? '—'}</div>
           <button
             onClick={logout}
             className="mt-2 flex items-center gap-2 text-xs text-white/70 hover:text-white"

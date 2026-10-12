@@ -11,6 +11,10 @@ import { AuditLogPage } from '@/features/audit/AuditLogPage';
 import { VehicleListPage } from '@/features/vehicles/VehicleListPage';
 import { VehicleCreatePage } from '@/features/vehicles/VehicleCreatePage';
 import { VehicleDetailPage } from '@/features/vehicles/VehicleDetailPage';
+import { CustomerListPage } from '@/features/customers/CustomerListPage';
+import { CustomerCreatePage } from '@/features/customers/CustomerCreatePage';
+import { BookingListPage } from '@/features/bookings/BookingListPage';
+import { BookingCreatePage } from '@/features/bookings/BookingCreatePage';
 
 export const router = createBrowserRouter([
   { path: '/login', element: <LoginPage /> },
@@ -24,12 +28,26 @@ export const router = createBrowserRouter([
           { path: '/dashboard', element: <AdminDashboard /> },
           { path: '/branch/dashboard', element: <BranchDashboard /> },
           { path: '/branches', element: <BranchesPage /> },
+
           { path: '/vehicles', element: <VehicleListPage /> },
           {
             element: <RequirePermission permission="vehicles.manage" />,
             children: [{ path: '/vehicles/new', element: <VehicleCreatePage /> }],
           },
           { path: '/vehicles/:id', element: <VehicleDetailPage /> },
+
+          { path: '/customers', element: <CustomerListPage /> },
+          {
+            element: <RequirePermission permission="customers.manage" />,
+            children: [{ path: '/customers/new', element: <CustomerCreatePage /> }],
+          },
+
+          { path: '/bookings', element: <BookingListPage /> },
+          {
+            element: <RequirePermission permission="bookings.manage" />,
+            children: [{ path: '/bookings/new', element: <BookingCreatePage /> }],
+          },
+
           {
             element: <RequirePermission permission="users.manage" />,
             children: [{ path: '/users', element: <UserListPage /> }],

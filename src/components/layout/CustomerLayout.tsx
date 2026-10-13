@@ -1,5 +1,5 @@
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { CalendarCheck, User, LogOut } from 'lucide-react';
+import { NavLink, Outlet, useNavigate, Link } from 'react-router-dom';
+import { CalendarCheck, User, LogOut, Plus } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useProfile } from '@/features/auth/useProfile';
 
@@ -24,6 +24,16 @@ export function CustomerLayout() {
           <div className="text-lg font-bold">Romix Website</div>
           <div className="text-xs text-white/60">Your Journey. Our Priority.</div>
         </div>
+
+        <div className="p-3">
+          <Link
+            to="/my/new-booking"
+            className="flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark text-white rounded-md px-3 py-2 text-sm font-medium"
+          >
+            <Plus size={16} /> Book a vehicle
+          </Link>
+        </div>
+
         <nav className="flex-1 p-3 space-y-1">
           {nav.map(({ to, label, icon: Icon }) => (
             <NavLink

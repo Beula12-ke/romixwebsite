@@ -19,6 +19,7 @@ import { BookingListPage } from '@/features/bookings/BookingListPage';
 import { BookingCreatePage } from '@/features/bookings/BookingCreatePage';
 import { MyBookingsPage } from '@/features/portal/MyBookingsPage';
 import { MyProfilePage } from '@/features/portal/MyProfilePage';
+import { MyNewBookingPage } from '@/features/portal/MyNewBookingPage';
 
 export const router = createBrowserRouter([
   { path: '/login', element: <LoginPage /> },
@@ -68,6 +69,7 @@ export const router = createBrowserRouter([
         children: [
           { path: '/my', element: <Navigate to="/my/bookings" replace /> },
           { path: '/my/bookings', element: <MyBookingsPage /> },
+          { path: '/my/new-booking', element: <MyNewBookingPage /> },
           { path: '/my/profile', element: <MyProfilePage /> },
         ],
       },

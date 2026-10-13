@@ -132,7 +132,14 @@ export function BookingListPage() {
                       {String(b.status).replace(/_/g, ' ')}
                     </span>
                   </td>
-                  <td></td>
+                  <td className="text-right pr-3">
+                    <Link
+                      to={`/bookings/${b.id}`}
+                      className="text-primary hover:text-primary-dark text-xs font-medium"
+                    >
+                      View →
+                    </Link>
+                  </td>
                 </tr>
               ))}
             </tbody>

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { ArrowLeft, CheckCircle2, Calendar, MapPin } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Calendar } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { useProfile } from '@/features/auth/useProfile';
 import { useAvailability } from '@/features/bookings/useAvailability';

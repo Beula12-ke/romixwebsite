@@ -18,6 +18,7 @@ import { CustomerCreatePage } from '@/features/customers/CustomerCreatePage';
 import { BookingListPage } from '@/features/bookings/BookingListPage';
 import { BookingCreatePage } from '@/features/bookings/BookingCreatePage';
 import { BookingDetailPage } from '@/features/bookings/BookingDetailPage';
+import { PaymentReceiptPage } from '@/features/payments/PaymentReceiptPage';
 import { MyBookingsPage } from '@/features/portal/MyBookingsPage';
 import { MyProfilePage } from '@/features/portal/MyProfilePage';
 import { MyNewBookingPage } from '@/features/portal/MyNewBookingPage';
@@ -55,6 +56,8 @@ export const router = createBrowserRouter([
             children: [{ path: '/bookings/new', element: <BookingCreatePage /> }],
           },
           { path: '/bookings/:id', element: <BookingDetailPage /> },
+
+          { path: '/payments/:id/receipt', element: <PaymentReceiptPage /> },
 
           {
             element: <RequirePermission permission="users.manage" />,

@@ -17,6 +17,7 @@ import {
 import { supabase } from '@/lib/supabase';
 import { useBooking } from './useBookings';
 import { usePermissions } from '@/features/auth/usePermissions';
+import { BookingPaymentsSection } from '@/features/payments/BookingPaymentsSection';
 
 const STATUS_COLOURS: Record<string, string> = {
   enquiry: 'bg-slate-100 text-slate-700',
@@ -215,6 +216,12 @@ export function BookingDetailPage() {
           </div>
         </div>
       </div>
+
+      <BookingPaymentsSection
+        bookingId={b.id}
+        branchId={b.branch_id}
+        total={Number(b.total)}
+      />
 
       {b.notes && (
         <div className="bg-white rounded-lg shadow p-6">

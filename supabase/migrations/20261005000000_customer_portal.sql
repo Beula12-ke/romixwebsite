@@ -9,7 +9,6 @@ create unique index if not exists customers_user_id_unique
   on public.customers(user_id)
   where user_id is not null;
 
--- Rewrite the new-user trigger: default role = customer, auto-create customer record
 create or replace function public.handle_new_user()
 returns trigger language plpgsql security definer set search_path = public as $$
 declare
@@ -49,12 +48,10 @@ begin
   return new;
 end $$;
 
--- RLS: customers can see their own customer record
 create policy "customers_self_select"
   on public.customers for select to authenticated
   using (user_id = auth.uid());
 
--- RLS: customers can see their own bookings
 create policy "bookings_customer_self_select"
   on public.bookings for select to authenticated
   using (
@@ -63,12 +60,10 @@ create policy "bookings_customer_self_select"
     )
   );
 
--- RLS: customers can see branches (needed for booking display)
 create policy "branches_customer_read"
   on public.branches for select to authenticated
   using (public.current_role_name() = 'customer');
 
--- RLS: customers can see vehicles they have booked
 create policy "vehicles_customer_visible"
   on public.vehicles for select to authenticated
   using (

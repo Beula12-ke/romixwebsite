@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { supabase } from '@/lib/supabase';
 
 export function LoginPage() {
@@ -8,15 +8,42 @@ export function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+
+  const registered = params.get('registered') === '1';
+  const pending = params.get('pending') === '1';
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      setLoading(false);
+      return setError(error.message);
+    }
+
+    const uid = data.user?.id;
+    if (!uid) {
+      setLoading(false);
+      return setError('Sign-in failed. Please try again.');
+    }
+
+    const { data: prof } = await supabase
+      .from('profiles')
+      .select('role_id, roles(name)')
+      .eq('id', uid)
+      .maybeSingle();
+
+    const roleName = (prof?.roles as any)?.name as string | undefined;
     setLoading(false);
-    if (error) return setError(error.message);
-    navigate('/dashboard');
+
+    if (roleName === 'customer') {
+      navigate('/my/bookings');
+    } else {
+      navigate('/dashboard');
+    }
   };
 
   return (
@@ -26,7 +53,17 @@ export function LoginPage() {
           <h1 className="text-2xl font-bold text-navy">Romix Website</h1>
           <p className="text-sm text-slate-500">Sign in to your account</p>
         </div>
+
+        {registered && (
+          <div className="text-sm text-success bg-success/10 rounded-md p-3">
+            {pending
+              ? 'Account created. Check your email to confirm, then sign in.'
+              : 'Account created successfully. Please sign in.'}
+          </div>
+        )}
+
         {error && <p className="text-danger text-sm">{error}</p>}
+
         <input
           type="email"
           required
@@ -49,6 +86,10 @@ export function LoginPage() {
         >
           {loading ? 'Signing in…' : 'Sign in'}
         </button>
+
+        <p className="text-center text-sm text-slate-500 pt-2">
+          New here? <Link to="/register" className="text-primary hover:text-primary-dark font-medium">Create an account</Link>
+        </p>
       </form>
     </div>
   );

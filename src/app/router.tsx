@@ -2,7 +2,9 @@ import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { RequireAuth } from '@/features/auth/RequireAuth';
 import { RequirePermission } from '@/features/auth/RequirePermission';
 import { LoginPage } from '@/features/auth/LoginPage';
+import { RegisterPage } from '@/features/auth/RegisterPage';
 import { AppLayout } from '@/components/layout/AppLayout';
+import { CustomerLayout } from '@/components/layout/CustomerLayout';
 import { AdminDashboard } from '@/features/branches/AdminDashboard';
 import { BranchDashboard } from '@/features/branches/BranchDashboard';
 import { BranchesPage } from '@/features/branches/BranchesPage';
@@ -15,9 +17,12 @@ import { CustomerListPage } from '@/features/customers/CustomerListPage';
 import { CustomerCreatePage } from '@/features/customers/CustomerCreatePage';
 import { BookingListPage } from '@/features/bookings/BookingListPage';
 import { BookingCreatePage } from '@/features/bookings/BookingCreatePage';
+import { MyBookingsPage } from '@/features/portal/MyBookingsPage';
+import { MyProfilePage } from '@/features/portal/MyProfilePage';
 
 export const router = createBrowserRouter([
   { path: '/login', element: <LoginPage /> },
+  { path: '/register', element: <RegisterPage /> },
   {
     element: <RequireAuth />,
     children: [
@@ -56,6 +61,14 @@ export const router = createBrowserRouter([
             element: <RequirePermission permission="audit.view" />,
             children: [{ path: '/audit', element: <AuditLogPage /> }],
           },
+        ],
+      },
+      {
+        element: <CustomerLayout />,
+        children: [
+          { path: '/my', element: <Navigate to="/my/bookings" replace /> },
+          { path: '/my/bookings', element: <MyBookingsPage /> },
+          { path: '/my/profile', element: <MyProfilePage /> },
         ],
       },
     ],

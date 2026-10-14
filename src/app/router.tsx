@@ -5,7 +5,7 @@ import { LoginPage } from '@/features/auth/LoginPage';
 import { RegisterPage } from '@/features/auth/RegisterPage';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { CustomerLayout } from '@/components/layout/CustomerLayout';
-import { AdminDashboard } from '@/features/branches/AdminDashboard';
+import { DashboardPage } from '@/features/dashboard/DashboardPage';
 import { BranchDashboard } from '@/features/branches/BranchDashboard';
 import { BranchesPage } from '@/features/branches/BranchesPage';
 import { UserListPage } from '@/features/users/UserListPage';
@@ -33,7 +33,7 @@ export const router = createBrowserRouter([
         element: <AppLayout />,
         children: [
           { path: '/', element: <Navigate to="/dashboard" replace /> },
-          { path: '/dashboard', element: <AdminDashboard /> },
+          { path: '/dashboard', element: <DashboardPage /> },
           { path: '/branch/dashboard', element: <BranchDashboard /> },
           { path: '/branches', element: <BranchesPage /> },
 

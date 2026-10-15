@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+﻿import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { RequireAuth } from '@/features/auth/RequireAuth';
 import { RequirePermission } from '@/features/auth/RequirePermission';
 import { LoginPage } from '@/features/auth/LoginPage';
@@ -7,10 +7,12 @@ import { AppLayout } from '@/components/layout/AppLayout';
 import { CustomerLayout } from '@/components/layout/CustomerLayout';
 import { PublicLayout } from '@/features/public/PublicLayout';
 import { HomePage } from '@/features/public/HomePage';
+import { FleetPage } from '@/features/public/FleetPage';
+import { PublicVehiclePage } from '@/features/public/PublicVehiclePage';
 import { DashboardPage } from '@/features/dashboard/DashboardPage';
 import { BranchDashboard } from '@/features/branches/BranchDashboard';
-import { BranchesPage } from '@/features/branches/BranchesPage';
 import { UserListPage } from '@/features/users/UserListPage';
+import { BranchesPage } from '@/features/branches/BranchesPage';
 import { AuditLogPage } from '@/features/audit/AuditLogPage';
 import { VehicleListPage } from '@/features/vehicles/VehicleListPage';
 import { VehicleCreatePage } from '@/features/vehicles/VehicleCreatePage';
@@ -30,6 +32,8 @@ export const router = createBrowserRouter([
     element: <PublicLayout />,
     children: [
       { path: '/', element: <HomePage /> },
+      { path: '/fleet', element: <FleetPage /> },
+      { path: '/fleet/:id', element: <PublicVehiclePage /> },
     ],
   },
   { path: '/login', element: <LoginPage /> },
@@ -88,3 +92,4 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
+

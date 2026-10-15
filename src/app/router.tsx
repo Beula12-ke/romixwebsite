@@ -5,6 +5,8 @@ import { LoginPage } from '@/features/auth/LoginPage';
 import { RegisterPage } from '@/features/auth/RegisterPage';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { CustomerLayout } from '@/components/layout/CustomerLayout';
+import { PublicLayout } from '@/features/public/PublicLayout';
+import { HomePage } from '@/features/public/HomePage';
 import { DashboardPage } from '@/features/dashboard/DashboardPage';
 import { BranchDashboard } from '@/features/branches/BranchDashboard';
 import { BranchesPage } from '@/features/branches/BranchesPage';
@@ -24,6 +26,12 @@ import { MyProfilePage } from '@/features/portal/MyProfilePage';
 import { MyNewBookingPage } from '@/features/portal/MyNewBookingPage';
 
 export const router = createBrowserRouter([
+  {
+    element: <PublicLayout />,
+    children: [
+      { path: '/', element: <HomePage /> },
+    ],
+  },
   { path: '/login', element: <LoginPage /> },
   { path: '/register', element: <RegisterPage /> },
   {
@@ -32,7 +40,6 @@ export const router = createBrowserRouter([
       {
         element: <AppLayout />,
         children: [
-          { path: '/', element: <Navigate to="/dashboard" replace /> },
           { path: '/dashboard', element: <DashboardPage /> },
           { path: '/branch/dashboard', element: <BranchDashboard /> },
           { path: '/branches', element: <BranchesPage /> },

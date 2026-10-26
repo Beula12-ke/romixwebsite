@@ -17,7 +17,7 @@ const nav = [
   { to: '/bookings', label: 'Bookings', icon: CalendarCheck },
   { to: '/vehicles', label: 'Vehicles', icon: Car },
   { to: '/customers', label: 'Customers', icon: Contact },
-  { to: '/branches', label: 'Branches', icon: Building2 },
+  { to: '/admin/branches', label: 'Branches', icon: Building2 },
   { to: '/users', label: 'Users', icon: Users },
   { to: '/audit', label: 'Audit Log', icon: ScrollText },
 ];

@@ -9,10 +9,14 @@ import { PublicLayout } from '@/features/public/PublicLayout';
 import { HomePage } from '@/features/public/HomePage';
 import { FleetPage } from '@/features/public/FleetPage';
 import { PublicVehiclePage } from '@/features/public/PublicVehiclePage';
+import { PublicBranchesPage } from '@/features/public/PublicBranchesPage';
+import { BranchesPage } from '@/features/branches/BranchesPage';
+import { AboutPage } from '@/features/public/AboutPage';
+import { ContactPage } from '@/features/public/ContactPage';
+import { PartnerPage } from '@/features/public/PartnerPage';
 import { DashboardPage } from '@/features/dashboard/DashboardPage';
 import { BranchDashboard } from '@/features/branches/BranchDashboard';
 import { UserListPage } from '@/features/users/UserListPage';
-import { BranchesPage } from '@/features/branches/BranchesPage';
 import { AuditLogPage } from '@/features/audit/AuditLogPage';
 import { VehicleListPage } from '@/features/vehicles/VehicleListPage';
 import { VehicleCreatePage } from '@/features/vehicles/VehicleCreatePage';
@@ -34,6 +38,10 @@ export const router = createBrowserRouter([
       { path: '/', element: <HomePage /> },
       { path: '/fleet', element: <FleetPage /> },
       { path: '/fleet/:id', element: <PublicVehiclePage /> },
+      { path: '/branches', element: <PublicBranchesPage /> },
+      { path: '/about', element: <AboutPage /> },
+      { path: '/contact', element: <ContactPage /> },
+      { path: '/partner', element: <PartnerPage /> },
     ],
   },
   { path: '/login', element: <LoginPage /> },
@@ -46,8 +54,7 @@ export const router = createBrowserRouter([
         children: [
           { path: '/dashboard', element: <DashboardPage /> },
           { path: '/branch/dashboard', element: <BranchDashboard /> },
-          { path: '/branches', element: <BranchesPage /> },
-
+          { path: '/admin/branches', element: <BranchesPage /> },
           { path: '/vehicles', element: <VehicleListPage /> },
           {
             element: <RequirePermission permission="vehicles.manage" />,
@@ -92,4 +99,9 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
+
+
+
+
+
 
